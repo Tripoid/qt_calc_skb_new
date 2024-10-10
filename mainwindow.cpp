@@ -14,6 +14,7 @@ MainWindow::MainWindow() : waitingForOperand(true) // interface creation
                            "font-size: 30px");
 
     QList<QString> opersMain;
+    bool equalFlag = true;
 
     display->setText("0");
 
@@ -170,6 +171,7 @@ void MainWindow::addOper() //add operator or operand
 {
     const QString numbers = "0123456789";
     const QString operands = "+*-/.";
+    equalFlag = true;
 
     button *clickeckedButton = (button*) sender();
     QString component = clickeckedButton->text();
@@ -211,30 +213,24 @@ void MainWindow::clearDisplay() //erase everything
 
 void MainWindow::checkString() //check string before evaluation
 {
-    bool flag = false;
     const QString numbers = "0123456789.";
     qDebug() << opersMain;
     if (!opersMain.isEmpty())
     {
-        for (QString& n : opersMain)
+        if (!equalFlag)
         {
-            qDebug() << n;
-            if (!(numbers.contains(n, Qt::CaseInsensitive)))
-            {
-                flag = true;
-                break;
-            }
+            qDebug() << "double equal";
+            opersMain.clear();
+            display->setText("0");
         }
-        if (numbers.contains(opersMain[opersMain.length()-1]))
+        else
         {
-            if (flag)
+            qDebug() << "mid step";
+            if (numbers.contains(opersMain[opersMain.length()-1]))
             {
+                qDebug() << "equal";
                 calcResult();
-            }
-            else
-            {
-                opersMain.clear();
-                display->setText("0");
+                equalFlag = false;
             }
         }
     }

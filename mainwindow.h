@@ -45,5 +45,6 @@ private:
     bool waitingForOperand;
 
     QList<QString> opersMain;
+    bool equalFlag;
 };
 #endif // MAINWINDOW_H
